@@ -12,7 +12,10 @@ func main() {
 		cmd.Execute()
 		return
 	}
-	launchGUI()
+	if err := launchGUI(); err != nil {
+		fmt.Println("Error:", err)
+		os.Exit()
+	}
 }
 
 func launchGUI() {
