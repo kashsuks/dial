@@ -23,7 +23,7 @@ func (a *App) startup(ctx context.Context) {
 // SessionDTO is the JSON shape exposed to the frontend
 type SessionDTO struct {
 	ID int64 `json:"id"`
-	Task string `json:task"`
+	Task string `json:"task"`
 	Project string `json:"project"`
 	Tags string `json:"tags"`
 	StartedAt string `json:"startedAt"`
