@@ -1,9 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
-	"dail/cmd"
+	"dial/cmd"
 )
 
 func main() {
@@ -12,4 +13,8 @@ func main() {
 		return
 	}
 	launchGUI()
+}
+
+func launchGUI() {
+	fmt.Println("GUI not implemented yet; run dial with a subcommand to use the CLI.")
 }

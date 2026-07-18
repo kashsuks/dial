@@ -10,7 +10,7 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-// go: embed schema.sql
+//go:embed schema.sql
 var schema string
 
 func DefaultPath() (string, error) {
@@ -19,7 +19,7 @@ func DefaultPath() (string, error) {
 		return "", err
 	}
 	dir := filepath.Join(home, ".dial")
-	if err := os.MkdirAll(dir, 0o755); err != nul {
+	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return "", err
 	}
 	return filepath.Join(dir, "data.db"), nil

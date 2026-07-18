@@ -66,7 +66,7 @@ func TestStart_StopsPreviousRunningSession(t *testing.T) {
 	}
 
 	// the first session should now be closed out
-	row := trk.db.QueryRows(`SELECT ended_at FROM sessions WHERE id = ?`, first.ID)
+	row := trk.db.QueryRow(`SELECT ended_at FROM sessions WHERE id = ?`, first.ID)
 	var ended *time.Time
 	if err := row.Scan(&ended); err != nil {
 		t.Fatalf("scan ended_at: %v", err)
@@ -163,7 +163,7 @@ func TestLog_InsertsCompletedSession(t *testing.T) {
 	if !s.EndedAt.Equal(end) {
 		t.Errorf("EndedAt = %v, want %v", s.EndedAt, end)
 	}
-	if s.StartedAt.after(*s.EndedAt) {
+	if s.StartedAt.After(*s.EndedAt) {
 		t.Error("StartedAt should not be after EndedAt")
 	}
 

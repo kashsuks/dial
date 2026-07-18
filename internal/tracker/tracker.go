@@ -12,7 +12,7 @@ type Session struct {
     Project string
     Tags string
     StartedAt time.Time
-    Ended At *time.Time
+    EndedAt *time.Time
     Source string
     Note string
 }

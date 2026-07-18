@@ -11,7 +11,7 @@ var (
 	startTags    string
 )
 
-var startCmd = &cobra.Commamd{
+var startCmd = &cobra.Command{
 	Use:   "start [task]",
 	Short: "Start tracking a task (stops any currently running session)",
 	Args:  cobra.ExactArgs(1),
