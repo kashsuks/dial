@@ -1,15 +1,15 @@
 package main
 
 import (
-    "os"
+	"os"
 
-    "dail/cmd"
+	"dail/cmd"
 )
 
 func main() {
-    if len(os.Args) > 1 {
-        cmd.Execute()
-	return
-    }
-    launchGUI()
+	if len(os.Args) > 1 {
+		cmd.Execute()
+		return
+	}
+	launchGUI()
 }

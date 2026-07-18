@@ -12,12 +12,12 @@ import (
 )
 
 var (
-	db *sql.Db
+	db  *sql.Db
 	trk *tracker.Tracker
 )
 
 var rootCmd = &cobra.Command{
-	Use: "dial",
+	Use:   "dial",
 	Short: "Dial - quick time tracking from the CLI and GUI",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		path, err := store.DefaultPath()

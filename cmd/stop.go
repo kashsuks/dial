@@ -5,12 +5,12 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	
+
 	"dial/internal/tracker"
 )
 
 var stopCmd = &cobra.Command{
-	Use: "stop",
+	Use:   "stop",
 	Short: "Stop the currently running session",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		s, err := trk.Stop()

@@ -8,13 +8,13 @@ import (
 
 var (
 	startProject string
-	startTags string
+	startTags    string
 )
 
 var startCmd = &cobra.Commamd{
-	Use: "start [task]",
+	Use:   "start [task]",
 	Short: "Start tracking a task (stops any currently running session)",
-	Args: cobra.ExactArgs(1),
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		s, err := trk.Start(args[0], startProject, startTags, "cli")
 		if err != nil {

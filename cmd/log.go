@@ -8,16 +8,16 @@ import (
 )
 
 var (
-	logProject string
-	logTags string
+	logProject  string
+	logTags     string
 	logDuration string
-	logAt string
+	logAt       string
 )
 
 var logCmd = &cobra.Command{
-	Use: "log [task]",
+	Use:   "log [task]",
 	Short: "Log a completed session retroactively",
-	Args: cobra.ExactArgs(1),
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		dur, err := time.ParseDuration(logDuration)
 		if err != nil {

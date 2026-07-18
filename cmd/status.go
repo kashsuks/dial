@@ -11,7 +11,7 @@ import (
 )
 
 var statusCmd = &cobra.Command{
-	Use: "status",
+	Use:   "status",
 	Short: "Show the currently running session, if any",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		s, err := trk.Current()

@@ -8,7 +8,7 @@ import (
 )
 
 var todayCmd = &cobra.Command{
-	Use: "today",
+	Use:   "today",
 	Short: "Show today's tracked sessions and total time",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		now := time.Now()
