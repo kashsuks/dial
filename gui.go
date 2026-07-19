@@ -31,6 +31,7 @@ func launchGUI() error {
 		Title: "Dial",
 		Width: 480,
 		Height: 640,
+		WindowStartState: options.Maximised,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
