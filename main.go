@@ -12,9 +12,8 @@ func main() {
 		cmd.Execute()
 		return
 	}
-	launchGUI()
-}
-
-func launchGUI() {
-	fmt.Println("GUI not implemented yet; run dial with a subcommand to use the CLI.")
+	if err := launchGUI(); err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(1)
+	}
 }

@@ -1,0 +1,34 @@
+:root {
+  --canvas: #FBFBFA;
+  --surface: #FFFFFF;
+  --border: #EAEAEA;
+  --ink: #111111;
+  --ink-hover: #333333;
+  --text: #2F3437;
+  --text-muted: #787774;
+
+  --pastel-blue-bg: #E1F3FE;
+  --pastel-blue-text: #1F6C9F;
+  --pastel-green-bg: #EDF3EC;
+  --pastel-green-text: #346538;
+  --pastel-yellow-bg: #FBF3DB;
+  --pastel-yellow-text: #956400;
+  --pastel-red-text: #9F2F2D;
+
+  --font-sans: 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+button {
+  font-family: inherit;
+}
