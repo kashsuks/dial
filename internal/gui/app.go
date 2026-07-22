@@ -3,17 +3,20 @@ package gui
 import (
 	"context"
 	"database/sql"
-
+	"time"
+	
+	"dial/internal/report"
 	"dial/internal/tracker"
 )
 
 type App struct {
 	ctx context.Context
+	db *sql.DB
 	trk *tracker.Tracker
 }
 
 func NewApp(db *sql.DB) *App {
-	return &App{ trk: tracker.New(db) }
+	return &App{db: db, trk: tracker.New(db)}
 }
 
 func (a *App) startup(ctx context.Context) {
@@ -30,6 +33,23 @@ type SessionDTO struct {
 	EndedAt string `json:"endedAt,omitempty"`
 	IsPaused bool `json:"isPaused"`
 	ElapsedSecs int64 `json:"elapsedSeconds"`
+}
+
+type TagTimeDTO struct {
+	Tag string `json:"tag"`
+	Seconds int64 `json:"seconds"`
+}
+
+type DayTotalDTO struct {
+	Date string `json:"date"`
+	Seconds int64 `json:"seconds"`
+}
+
+type StatsDTO struct {
+	TotalSeconds int64 `json:"totalSeconds"`
+	SessionCount int `json:"sessionCount"`
+	TopTag string `json:"topTag"`
+	StreakDays int `json:"streakDays"`
 }
 
 func toDTO(s *tracker.Session) *SessionDTO {
@@ -92,4 +112,46 @@ func (a *App) CurrentSession() (*SessionDTO, error) {
 		return nil, err
 	}
 	return toDTO(s), nil
+}
+
+func (a *App) GetTagBreakdown(rangeName string) ([]TagTimeDTO, error) {
+	start, end := report.RangeBounds(rangeName, time.Now())
+	rows, err := report.TagBreakdown(a.db, start, end)
+	if err != nil {
+		return nil, err
+	}
+	out := make([]TagTimeDTO, len(rows))
+	for i, r := range rows {
+		out[i] = TagTimeDTO{Tag: r.Tag, Seconds: r.Seconds}
+	}
+	return out, nil
+}
+
+// Returns time-per-day for a named range
+func (a *App) GetDailyTotals(rangeName string) ([]DayTotalDTO, error) {
+	start, end := report.RangeBounds(rangeName, time.Now())
+	rows, err := report.DailyTotals(a.db, start, end)
+	if err != nil {
+		return nil, err
+	}
+	out := make([]DayTotalDTO, len(rows))
+	for i, r := range rows {
+		out[i] = DayTotalDTO{Date: r.Date, Seconds: r.Seconds}
+	}
+	return out, nil
+}
+
+// Returns summary stats for a named range
+func (a *App) GetStats(rangeName string) (*StatsDTO, error) {
+	start, end := report.RangeBounds(rangeName, time.Now())
+	s, err := report.Summary(a.db, start, end)
+	if err != nil {
+		return nil, err
+	}
+	return &StatsDTO{
+		TotalSeconds: s.TotalSeconds,
+		SessionCount: s.SessionCount,
+		TopTag: s.TopTag,
+		StreakDays: s.StreakDays
+	}, nil
 }

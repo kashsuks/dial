@@ -145,3 +145,100 @@ func DailyTotals(db *sql.DB, start, end time.Time) ([]DayTotal, error) {
 	}
 	return result, nil
 }
+
+func Summary(db *sql.DB, start, end time.Time) (*Stats, error) {
+	tagTotals, err := TagBreakdown(db, start, end)
+	if err != nil {
+		return nil, err
+	}
+
+	var total int64
+	var topTag string
+	var topSecs int64
+	for _, tt := range tagTotals {
+		total += tt.Seconds
+		if tt.Seconds > topSecs {
+			topSecs = tt.Seconds
+			topTag = tt.Tag
+		}
+	}
+
+	var count int
+	if err := db.QueryRow(
+		`SELECT COUNT(*) FROM sessions WHERE started_at < ? AND (ended_at IS NULL OR ended_at >= ?)`,
+		end, start,
+	).Scan(&count); err != nil {
+		return nil, err
+	}
+
+	streak, err := currentStreak(db)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Stats{
+		TotalSeconds: total,
+		SessionCount: coumt,
+		TopTag: topTag,
+		StreakDays: streak,
+	}, nil
+}
+
+func currentStreak(db *sql.DB) (int, error) {
+	rows, err := db.Query(`SELECT DISTINCT date(started_at) FROM sessions ORDER BY date(started_at) DESC`)
+	if err != nil {
+		return 0, err
+	}
+	defer rows.Close()
+
+	days := map[string]bool{}
+	for rows.Next() {
+		var d string
+		if err := rows.Scan(&d); err != nil {
+			return 0, err
+		}
+		days[d] = true
+	}
+
+	streak := 0
+	cursor: time.Now()
+	for {
+		key := cursor.Format("2006-01-02")
+		if !days[key] {
+			break
+		}
+		streak++
+		cursor = cursor.AddDate(0, 0, -1)
+	}
+	return streak, nil
+}
+
+func splitTags(raw string) []string {
+	var out []string
+	cur := ""
+	for _, r:= range raw {
+		if r == ',' {
+			if cur != "" {
+				out = append(out, trimSpace(cur))
+			}
+			cur = ""
+		} else {
+			cur += string(r)
+		}
+	}
+	if cur != "" {
+		out = append(out, trimSpace(cur))
+	}
+	return out
+}
+
+func trimSPace(s string) string {
+	start, end := 0, len(s)
+	for start < end && s[start] == ' ' {
+		start++
+	}
+	for end > start && s[end-1] == ' ' {
+		end--
+	}
+	return s[start:end]
+}
