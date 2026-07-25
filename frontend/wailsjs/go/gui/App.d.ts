@@ -4,6 +4,12 @@ import {gui} from '../models';
 
 export function CurrentSession():Promise<gui.SessionDTO>;
 
+export function GetDailyTotals(arg1:string):Promise<Array<gui.DayTotalDTO>>;
+
+export function GetStats(arg1:string):Promise<gui.StatsDTO>;
+
+export function GetTagBreakdown(arg1:string):Promise<Array<gui.TagTimeDTO>>;
+
 export function PauseSession():Promise<gui.SessionDTO>;
 
 export function ResumeSession():Promise<gui.SessionDTO>;

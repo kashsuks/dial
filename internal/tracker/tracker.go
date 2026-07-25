@@ -82,7 +82,7 @@ func (t *Tracker) Start(task, project, tags, source string) (*Session, error) {
 // stop ends the current running session, if any.
 func (t *Tracker) Stop() (*Session, error) {
     row := t.db.QueryRow(
-        `SELECT id, task, project, tags, started_at, source
+        `SELECT id, task, project, tags, started_at, paused_at, paused_seconds, source
 	 	 FROM sessions WHERE ended_at IS NULL
 	 	 ORDER BY started_at DESC LIMIT 1`,
     )

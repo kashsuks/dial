@@ -6,6 +6,18 @@ export function CurrentSession() {
   return window['go']['gui']['App']['CurrentSession']();
 }
 
+export function GetDailyTotals(arg1) {
+  return window['go']['gui']['App']['GetDailyTotals'](arg1);
+}
+
+export function GetStats(arg1) {
+  return window['go']['gui']['App']['GetStats'](arg1);
+}
+
+export function GetTagBreakdown(arg1) {
+  return window['go']['gui']['App']['GetTagBreakdown'](arg1);
+}
+
 export function PauseSession() {
   return window['go']['gui']['App']['PauseSession']();
 }

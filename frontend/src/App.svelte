@@ -1,10 +1,10 @@
 <script>
-  import Tracker from './lib/Tracker.svelte';
+  import Dashboard from './lib/Dashboard.svelte';
 </script>
 
 <main>
   <h1>Dial</h1>
-  <Tracker />
+  <Dashboard />
 </main>
 
 <style>

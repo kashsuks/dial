@@ -47,7 +47,7 @@ func RangeBounds(rangeName string, now time.Time) (time.Time, time.Time) {
 // A session with multiple comma-seperated tags contributes its full duration to each tag
 func TagBreakdown(db *sql.DB, start, end time.Time) ([]TagTime, error) {
 	rows, err := db.Query(
-		`SELECT tags, started_at, ended_at, paused_seconds FROM sesssions
+		`SELECT tags, started_at, ended_at, paused_seconds FROM sessions
 		 WHERE started_at < ? AND (ended_at IS NULL or ended_at >= ?)`,
 		end, start,
 	)
@@ -67,7 +67,7 @@ func TagBreakdown(db *sql.DB, start, end time.Time) ([]TagTime, error) {
 		if err := rows.Scan(&tags, &startedAt, &endedAt, &pausedSeconds); err != nil {
 			return nil, err
 		}
-		offEnd := now
+		effEnd := now
 		if endedAt != nil {
 			effEnd = *endedAt
 		}
@@ -178,7 +178,7 @@ func Summary(db *sql.DB, start, end time.Time) (*Stats, error) {
 
 	return &Stats{
 		TotalSeconds: total,
-		SessionCount: coumt,
+		SessionCount: count,
 		TopTag: topTag,
 		StreakDays: streak,
 	}, nil
@@ -201,7 +201,7 @@ func currentStreak(db *sql.DB) (int, error) {
 	}
 
 	streak := 0
-	cursor: time.Now()
+	cursor := time.Now()
 	for {
 		key := cursor.Format("2006-01-02")
 		if !days[key] {
@@ -232,7 +232,7 @@ func splitTags(raw string) []string {
 	return out
 }
 
-func trimSPace(s string) string {
+func trimSpace(s string) string {
 	start, end := 0, len(s)
 	for start < end && s[start] == ' ' {
 		start++

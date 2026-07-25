@@ -1,7 +1,7 @@
 <script>
   export let data = []; // [{ tag, seconds }]
 
-  const colors = ['#1F6C9F', '#346538', '#956400', '#9F2F2D', '$6B5B95', '#4A7C7C'];
+  const colors = ['#1F6C9F', '#346538', '#956400', '#9F2F2D', '#6B5B95', '#4A7C7C'];
 
   $: total = data.reduce((sum, d) => sum + d.seconds, 0);
 
@@ -23,7 +23,7 @@
     const x2 = cx + r * Math.cos(toRad(endAngle));
     const y2 = cy + r * Math.sin(toRad(endAngle));
     const largeArc = endAngle - startAngle > 180 ? 1 : 0;
-    return `M ${cx} ${cy} L ${x1} ${y1} A ${r} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`;
+    return `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`;
   }
 
   function formatHours(seconds) {

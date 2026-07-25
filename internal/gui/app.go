@@ -152,6 +152,6 @@ func (a *App) GetStats(rangeName string) (*StatsDTO, error) {
 		TotalSeconds: s.TotalSeconds,
 		SessionCount: s.SessionCount,
 		TopTag: s.TopTag,
-		StreakDays: s.StreakDays
+		StreakDays: s.StreakDays,
 	}, nil
 }

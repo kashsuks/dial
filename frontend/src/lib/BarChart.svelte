@@ -13,7 +13,7 @@
   }
 </script>
 
-<div class="bar-chart"
+<div class="bar-chart">
   {#if data.length === 0}
     <div class="empty">No time logged yet</div>
   {:else}

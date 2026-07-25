@@ -22,7 +22,7 @@
       <Hash size={16} weight="bold" />
       <div>
         <div class="stat-value">{stats.topTag || '-'}</div>
-        <div class="stats-label">Top tag</div>
+        <div class="stat-label">Top tag</div>
       </div>
     </div>
     <div class="stat">
@@ -37,7 +37,7 @@
 
 <style>
   .stats-row {
-    display: row;
+    display: flex;
     gap: 12px;
   }
   .stat {
