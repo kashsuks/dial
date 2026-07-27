@@ -17,6 +17,8 @@ CREATE TABLE sessions (
 	tags TEXT,
 	started_at DATETIME NOT NULL,
 	ended_at DATETIME,
+	paused_at DATETIME,
+	paused_seconds INTEGER DEFAULT 0,
 	source TEXT DEFAULT 'manual',
 	note TEXT
 );

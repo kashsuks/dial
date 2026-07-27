@@ -59,10 +59,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: clamp(12px, 1.6vw, 20px);
+    width: 100%;
   }
 
-  .pie-svg { width: 160px; height: 160px; }
+  .pie-svg { 
+    width: min(220px, 60%); 
+    height: 160px;
+    aspect-ratio: 1 / 1;
+  }
   .empty {
     color: var(--text-muted);
     font-size: 13px;

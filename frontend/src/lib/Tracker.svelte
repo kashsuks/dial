@@ -1,5 +1,5 @@
 <script>
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy, createEventDispatcher } from 'svelte';
   import { Play, Pause, Stop, Tag, FolderSimple } from 'phosphor-svelte';
   import {
     StartSession,
@@ -8,6 +8,8 @@
     ResumeSession,
     CurrentSession,
   } from '../../wailsjs/go/gui/App';
+
+  const dispatch = createEventDispatcher();
 
   let session = null;
   let taskInput = '';
@@ -48,20 +50,24 @@
     taskInput = '';
     projectInput = '';
     tagsInput = '';
+    dispatch('change');
   }
 
   async function handlePause() {
     session = await PauseSession();
+    dispatch('change');
   }
 
   async function handleResume() {
     session = await ResumeSession();
+    dispatch('change');
   }
 
   async function handleStop() {
     await StopSession();
     session = null;
     elapsedDisplay = '00:00:00';
+    dispatch('change');
   }
 
   onMount(() => {
@@ -141,17 +147,20 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 28px;
+    padding: clamp(18px, 2.2vw, 32px);
+    width: 100%;
   }
 
   .running-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   .task-name {
-    font-size: 17px;
+    font-size: clamp(15px, 1.4vw, 19px);
     font-weight: 600;
     color: var(--ink);
   }
@@ -179,16 +188,17 @@
     align-items: center;
     gap: 4px;
     font-size: 12px;
+    line-height: 1;
     color: var(--text-muted);
   }
   
   .elapsed {
     font-family: var(--font-mono);
-    font-size: 40px;
+    font-size: clamp(32px, 4vw, 52px);
     font-weight: 500;
     color: var(--ink);
     letter-spacing: -0.01em;
-    margin: 24px 0;
+    margin: clamp(16px, 2.4vw, 28px) 0;
   }
 
   .controls {
@@ -232,8 +242,8 @@
   .btn-full { width: 100%; margin-top: 14px; }
 
   .idle-state .input-task {
-    font-size: 15px;
-    padding: 12px 14px;
+    font-size: clamp(14px, 1.2vw, 16px);
+    padding: clamp(10px, 1vw, 14px) clamp(12px, 1.2vw, 16px);
   }
 
   .input-row {
@@ -244,10 +254,11 @@
 
   .input {
     width: 100%;
+    min-width: 0;
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 10px 14px;
-    font-size: 13px;
+    padding: clamp(9xp, 0.9vw, 12px) clamp(10px, 1vw, 14px);
+    font-size: clamp(12px, 1vw, 14px);
     color: var(--text);
     background: var(--canvas);
     outline: none;

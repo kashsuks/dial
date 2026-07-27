@@ -73,35 +73,37 @@
   .dashboard {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    width: 100%;
+    gap: clamp(12px, 1.6vw, 20px);
   }
   .top-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(12px, 1.6vw, 20px);
   }
   .panel {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 24px;
+    padding: clamp(18px, 2.2vw, 32px);
+    min-width: 0;
   }
   .tracker-panel, .pie-panel {
     padding: 0;
   }
   .tracker-panel :global(.tracker-card),
   .pie-panel {
-    padding: 24px;
+    padding: clamp(18px, 2.2vw, 32px);
     border: none;
   }
   .panel-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 14px;
+    margin-bottom: clamp(10px, 1.2vw, 16px);
   }
   .panel-title {
-    font-size: 13px;
+    font-size: clamp(12px, 1vw, 14px);
     font-weight: 600;
     color: var(--ink);
   }
@@ -112,18 +114,22 @@
   }
   select {
     appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
     background: var(--canvas);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 5px 24px 5px 10px;
+    padding: 5px 26px 5px 10px;
     font-size: 11px;
     font-family: var(--font-sans);
     color: var(--text);
     cursor: pointer;
   }
   .select-wrap :global(svg) {
-    position: relative;
-    right: 8px;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
     pointer-events: none;
     color: var(--text-muted);
   }

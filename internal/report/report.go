@@ -185,7 +185,7 @@ func Summary(db *sql.DB, start, end time.Time) (*Stats, error) {
 }
 
 func currentStreak(db *sql.DB) (int, error) {
-	rows, err := db.Query(`SELECT DISTINCT date(started_at) FROM sessions ORDER BY date(started_at) DESC`)
+	rows, err := db.Query(`SELECT DISTINCT substr(started_at, 1, 10) FROM sessions ORDER BY substr(started_at, 1, 10) DESC`)
 	if err != nil {
 		return 0, err
 	}
