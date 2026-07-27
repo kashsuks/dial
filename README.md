@@ -14,43 +14,59 @@ Dial is a lightweight time tracker with two faces on the same tool: a fast CLI f
 
 ## Installing from a GitHub Release
 
-1. Go to the project's [Releases](../../releases) page and download the archive for your OS/architecture (e.g. `dial-darwin-arm64.tar.gz`, `dial-linux-amd64.tar.gz`, `dial-windows-amd64.zip`).
-2. Extract the archive to get the `dial` binary (`dial.exe` on Windows).
-3. Move it somewhere on your `PATH`, for example:
+Go to the project's [Releases](../../releases) page and download the archive for your OS/architecture:
+
+| Platform | Archive | Contains |
+|----------|---------|----------|
+| macOS (Apple Silicon) | `dial-darwin-arm64.zip` | `Dial.app` |
+| macOS (Intel) | `dial-darwin-amd64.zip` | `Dial.app` |
+| Windows (x64) | `dial-windows-amd64.zip` | `dial.exe` |
+| Windows (ARM64) | `dial-windows-arm64.zip` | `dial.exe` |
+| Linux (x64) | `dial-linux-amd64.tar.gz` | `dial` |
+
+### macOS
+
+1. Unzip the archive and drag `Dial.app` to `/Applications`.
+2. Double-clicking `Dial.app` launches the GUI directly.
+3. `Dial.app` is also the CLI binary — the executable inside the bundle is a normal `dial` binary that behaves like any other CLI tool when given arguments. To use it from the terminal, symlink it onto your `PATH`:
 
    ```bash
-   # macOS / Linux
-   tar -xzf dial-<platform>.tar.gz
-   chmod +x dial
-   sudo mv dial /usr/local/bin/dial
-   ```
-
-   ```powershell
-   # Windows (PowerShell) - extract the zip, then add the folder to PATH
-   # or move dial.exe into a directory already on PATH
-   ```
-
-4. Verify it's installed:
-
-   ```bash
+   sudo ln -s /Applications/Dial.app/Contents/MacOS/dial /usr/local/bin/dial
    dial status
    ```
 
-### macOS Gatekeeper note
+#### Gatekeeper note
 
-Since the binary/app isn't notarized by an Apple-registered developer, macOS may block it on first launch ("cannot be opened because the developer cannot be verified"). If that happens, either:
+The app isn't notarized/signed by an Apple-registered developer, so macOS may block it on first launch ("cannot be opened because the developer cannot be verified"). Either right-click `Dial.app` in Finder and choose **Open** to bypass the check once, or remove the quarantine flag:
 
 ```bash
-xattr -d com.apple.quarantine /usr/local/bin/dial
-# or, for the .app bundle:
 xattr -d com.apple.quarantine /Applications/Dial.app
 ```
 
-or right-click the app in Finder and choose "Open" to bypass the check once.
+### Windows
 
-### Windows SmartScreen note
+1. Extract `dial-windows-<arch>.zip` to get `dial.exe`.
+2. Double-click it to launch the GUI, or move it onto your `PATH` to use it from a terminal:
 
-Windows may show an "unrecognized app" SmartScreen warning for the same reason (no code-signing certificate). Click **More info → Run anyway** if you trust the source.
+   ```powershell
+   dial status
+   ```
+
+#### SmartScreen note
+
+Since the binary isn't code-signed, Windows may show an "unrecognized app" SmartScreen warning. Click **More info → Run anyway** if you trust the source.
+
+### Linux
+
+```bash
+tar -xzf dial-linux-amd64.tar.gz
+chmod +x dial
+sudo mv dial /usr/local/bin/dial
+dial status       # CLI
+dial               # GUI (requires GTK3 + WebKit2GTK installed, see below)
+```
+
+The Linux GUI is built against `webkit2gtk-4.1`/GTK3, which need to be installed on your system (most desktop Linux distros already have these as part of GNOME/GTK apps). On Debian/Ubuntu: `sudo apt install libgtk-3-0 libwebkit2gtk-4.1-0`.
 
 ---
 
@@ -61,7 +77,7 @@ Windows may show an "unrecognized app" SmartScreen warning for the same reason (
 - [Go](https://go.dev/dl/) 1.25+
 - [Node.js](https://nodejs.org/) + npm (for the frontend)
 - [Wails CLI](https://wails.io/docs/gettingstarted/installation) v2 (`go install github.com/wailsapp/wails/v2/cmd/wails@latest`) if you want to use `wails dev`/`wails build` directly
-- A C compiler toolchain (needed by the SQLite driver on some platforms) — Xcode Command Line Tools on macOS, `build-essential` on Linux, or MSVC/TDM-GCC on Windows
+- A native GUI toolchain for your OS — Xcode Command Line Tools on macOS, GTK3 + WebKit2GTK dev packages on Linux (`sudo apt install libgtk-3-dev libwebkit2gtk-4.1-dev`), or a working `go build` toolchain on Windows. (The SQLite driver itself is pure Go and needs no C compiler; the GUI's native webview bindings are what require these.)
 
 ### Clone and install dependencies
 
@@ -94,6 +110,8 @@ cd frontend && npm run build && cd ..
 ./scripts/dial.sh build
 ```
 
+> **Note:** a plain `go build` (without the `production` build tag) links in a stub Wails backend that does nothing when you run `dial` with no arguments — the CLI subcommands still work, but the GUI window won't appear. This is fine for CLI-only development. If you need a build where the GUI actually launches, use `go build -tags production` or, better, `wails build` (see below).
+
 ### Build/run with Wails directly (GUI development)
 
 For live-reloading GUI development:
@@ -109,6 +127,10 @@ wails build
 ```
 
 The output binary/bundle will be under `build/bin/`.
+
+### Cross-platform builds
+
+Dial's GUI links against a different native toolkit per OS (Cocoa on macOS, WebView2 on Windows, GTK3/WebKit2GTK on Linux), so a single machine can't produce all release artifacts — each platform has to be built on that platform. `.github/workflows/release.yml` handles this: pushing a `v*.*.*` tag spins up a macOS runner (arm64 + amd64), a Windows runner (amd64 + arm64), and a Linux runner (amd64) in parallel, and publishes all five archives to a GitHub Release.
 
 ---
 
