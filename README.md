@@ -2,15 +2,12 @@
 
 Dial is a lightweight time tracker with two faces on the same tool: a fast CLI for starting/stopping/logging work from the terminal, and a native desktop GUI (built with [Wails](https://wails.io) + Svelte) for a visual tracker and dashboard. Both share the same local SQLite database, so you can start a session from the CLI and see it live in the GUI, or vice versa.
 
-> **Status:** Dial is an early-stage personal project. It has not been broadly tested across environments and the database schema/CLI flags may change without notice between releases. Use it for your own time tracking, but don't build critical workflows on top of it yet, and keep in mind your tracked data lives in a local SQLite file with no built-in backup or sync.
-
 ## How it works
 
 - Running `dial` with no arguments launches the GUI.
 - Running `dial` with a subcommand (`start`, `stop`, `status`, `log`, `today`) runs the CLI.
 - Both read/write the same database at `~/.dial/data.db`, created automatically on first run.
 
----
 
 ## Installing from a GitHub Release
 
@@ -67,8 +64,6 @@ dial               # GUI (requires GTK3 + WebKit2GTK installed, see below)
 ```
 
 The Linux GUI is built against `webkit2gtk-4.1`/GTK3, which need to be installed on your system (most desktop Linux distros already have these as part of GNOME/GTK apps). On Debian/Ubuntu: `sudo apt install libgtk-3-0 libwebkit2gtk-4.1-0`.
-
----
 
 ## Local Setup (build from source)
 
@@ -197,8 +192,6 @@ Show all sessions tracked today and the total time.
 dial today
 ```
 
----
-
 ## GUI usage
 
 Launch the GUI by running `dial` with no arguments (or by opening the installed app).
@@ -210,8 +203,6 @@ The window has two parts:
 
 Starting or stopping a session in the GUI refreshes the dashboard automatically, and since the GUI and CLI share the same database, a session started from the CLI will show up next time the dashboard refreshes.
 
----
-
 ## Data & storage
 
 Dial stores all data locally in a SQLite database at `~/.dial/data.db` (created on first run). There is no cloud sync, backup, or telemetry — the data never leaves your machine. Back up that file yourself if you want to preserve your history.
@@ -219,5 +210,3 @@ Dial stores all data locally in a SQLite database at `~/.dial/data.db` (created 
 ## Disclaimers
 
 - This is an unsigned/unnotarized personal-project binary — see the Gatekeeper/SmartScreen notes above before running it on macOS or Windows.
-- No warranty is provided; use at your own risk. See [LICENSE](LICENSE) (MIT).
-- The CLI and database schema are still evolving and may introduce breaking changes between releases.
