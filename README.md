@@ -210,3 +210,7 @@ Dial stores all data locally in a SQLite database at `~/.dial/data.db` (created 
 ## Disclaimers
 
 - This is an unsigned/unnotarized personal-project binary — see the Gatekeeper/SmartScreen notes above before running it on macOS or Windows.
+
+## AI Declaration
+
+I used AI for debugging the dashboard wheel along with some styling issues for different screen sizes.
